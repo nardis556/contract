@@ -139,12 +139,12 @@ export default function Home() {
 
     return (
       <Box mt={4} p={3} bg="gray.700" borderRadius="md">
+        <Button colorScheme="red" onClick={clearRpcResponse}>
+          Clear Response
+        </Button>
         <pre>{JSON.stringify(rpcResponse, null, 2)}</pre>
-        <Box display="flex" justifyContent="center" mt={2}>
-          <Button colorScheme="red" onClick={clearRpcResponse}>
-            Clear Response
-          </Button>
-        </Box>
+
+        <Box display="flex" justifyContent="center" mt={2}></Box>
       </Box>
     );
   };
