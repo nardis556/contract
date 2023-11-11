@@ -87,7 +87,7 @@ export default function Home() {
       });
       setConnectionMethod("metamask");
       setIsMetaMaskConnected(true);
-      quickToast("Success", "Connected with MetaMask", "success");
+      // quickToast("Success", "Connected with MetaMask", "success");
     } catch (error) {
       console.error("MetaMask connection failed:", error);
       quickToast("Connection failed!", error.message, "error");
@@ -156,7 +156,7 @@ export default function Home() {
 
   const handleContractInteraction = async () => {
     if (!selectedFunction) {
-      showToast("Error", "No function selected", "error");
+      quickToast("Error", "No function selected", "error");
       return;
     }
 
@@ -165,18 +165,16 @@ export default function Home() {
 
       if (connectionMethod === "metamask") {
         if (!window.ethereum) {
-          showToast("Error", "MetaMask is not available", "error");
+          quickToast("Error", "MetaMask is not available", "error");
           return;
         }
 
         try {
-          // Attempt to add the new network first
           await window.ethereum.request({
             method: "wallet_addEthereumChain",
             params: [networkParams],
           });
         } catch (addError) {
-          // If the network is already known, an error will be thrown. Catch it and proceed to switch.
           if (addError.code === 4902) {
             quickToast("Error", "Failed to add a new network", "error");
             return;
@@ -184,7 +182,6 @@ export default function Home() {
         }
 
         try {
-          // Now switch to the network
           await window.ethereum.request({
             method: "wallet_switchEthereumChain",
             params: [{ chainId: networkParams.chainId }],
