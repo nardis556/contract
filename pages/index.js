@@ -224,7 +224,7 @@ export default function Home() {
         <VStack spacing={4}>
           {isMetaMaskAvailable && !isMetaMaskConnected && (
             <Button colorScheme="green" onClick={connectMetaMask}>
-              Connect with MetaMask
+              Connect MetaMask
             </Button>
           )}
           {!isMetaMaskConnected && (
