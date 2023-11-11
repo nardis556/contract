@@ -217,7 +217,9 @@ export default function Home() {
         tx.wait().then((receipt) => {
           console.log(receipt);
           setRpcResponse(receipt);
-          showToast("Transaction successful!", receipt.transactionHash);
+          showToast(
+            `Transaction mined at block #${receipt.blockNumber}. Tx hash ${receipt.transactionHash}`
+          );
         });
       }
     } catch (error) {
@@ -233,7 +235,6 @@ export default function Home() {
     <Box display="flex" justifyContent="center" p={5}>
       <Box maxWidth="800px" width="100%">
         {" "}
-        {/* Set a maximum width */}
         <VStack spacing={4}>
           {isMetaMaskAvailable && !isMetaMaskConnected && (
             <Button colorScheme="green" onClick={connectMetaMask}>
@@ -278,7 +279,11 @@ export default function Home() {
             ))}
           </Select>
           {renderFunctionInputs()}
-          <Button colorScheme="blue" onClick={handleContractInteraction}>
+          <Button
+            colorScheme="blue"
+            onClick={handleContractInteraction}
+            isDisabled={isButtonDisabled}
+          >
             Call Contract Function
           </Button>
 
