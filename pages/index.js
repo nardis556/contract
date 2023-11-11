@@ -159,11 +159,31 @@ export default function Home() {
       if (connectionMethod === "metamask") {
         provider = new ethers.providers.Web3Provider(window.ethereum);
         wallet = provider.getSigner();
+
+        try {
+          await provider.send("wallet_switchEthereumChain", [
+            { chainId: networkParams.chainId },
+          ]);
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            try {
+              await provider.send("wallet_addEthereumChain", [networkParams]);
+            } catch (addError) {
+              showToast("Error", "Failed to add a new network", "error");
+              return;
+            }
+          } else {
+            showToast("Error", "Failed to switch the network", "error");
+            return;
+          }
+        }
+
+        // wallet = provider.getSigner();
       } else if (connectionMethod === "privateKey") {
         provider = new ethers.providers.JsonRpcProvider(rpcUrl);
         wallet = new ethers.Wallet(privateKey, provider);
       } else {
-        quickToast("Error", "No connection method selected", "error");
+        showToast("Error", "No connection method selected", "error");
         return;
       }
 
