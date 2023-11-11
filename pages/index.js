@@ -26,7 +26,6 @@ export default function Home() {
   const [rpcResponse, setRpcResponse] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-
   const toast = useToast();
 
   useEffect(() => {
@@ -157,6 +156,7 @@ export default function Home() {
   };
 
   const handleContractInteraction = async () => {
+    clearRpcResponse();
     setIsButtonDisabled(true);
     if (!selectedFunction) {
       quickToast("Error", "No function selected", "error");
@@ -205,11 +205,21 @@ export default function Home() {
       }
 
       const contract = new ethers.Contract(contractAddress, abi, wallet);
+
+      console.log(`Tx`);
       const tx = await contract[selectedFunction.name](...functionArgs);
 
       console.log(tx);
       setRpcResponse(tx);
       showToast(JSON.stringify(tx, null, 2));
+
+      if (tx.wait) {
+        tx.wait().then((receipt) => {
+          console.log(receipt);
+          setRpcResponse(receipt);
+          showToast("Transaction successful!", receipt.transactionHash);
+        });
+      }
     } catch (error) {
       console.error("Transaction failed:", error);
       showToast("Transaction failed!", error.message, "error");
@@ -217,7 +227,6 @@ export default function Home() {
     setTimeout(() => {
       setIsButtonDisabled(false);
     }, 3000);
-  };
   };
 
   return (
