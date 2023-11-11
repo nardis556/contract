@@ -24,6 +24,8 @@ export default function Home() {
   const [functionArgs, setFunctionArgs] = useState([]);
   const [isMetaMaskAvailable, setIsMetaMaskAvailable] = useState(false);
   const [rpcResponse, setRpcResponse] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
 
   const toast = useToast();
 
@@ -155,6 +157,7 @@ export default function Home() {
   };
 
   const handleContractInteraction = async () => {
+    setIsButtonDisabled(true);
     if (!selectedFunction) {
       quickToast("Error", "No function selected", "error");
       return;
@@ -211,6 +214,10 @@ export default function Home() {
       console.error("Transaction failed:", error);
       showToast("Transaction failed!", error.message, "error");
     }
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 3000);
+  };
   };
 
   return (
