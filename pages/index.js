@@ -17,6 +17,7 @@ export default function Home() {
   const [rpcUrl, setRpcUrl] = useState("https://rpc-devnet-idex.hardfork.dev");
   const [privateKey, setPrivateKey] = useState("");
   const [abi, setAbi] = useState("");
+  const [chainId, setChainId] = useState("23432");
   const [parsedAbi, setParsedAbi] = useState([]);
   const [functionNames, setFunctionNames] = useState([]);
   const [selectedFunction, setSelectedFunction] = useState(null);
@@ -147,6 +148,12 @@ export default function Home() {
     );
   };
 
+  const networkParams = {
+    chainId: ethers.utils.hexlify(Number(chainId)),
+    chainName: "testnet",
+    rpcUrls: [rpcUrl],
+  };
+
   const handleContractInteraction = async () => {
     if (!selectedFunction) {
       showToast("Error", "No function selected", "error");
@@ -157,33 +164,43 @@ export default function Home() {
       let provider, wallet;
 
       if (connectionMethod === "metamask") {
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        wallet = provider.getSigner();
+        if (!window.ethereum) {
+          showToast("Error", "MetaMask is not available", "error");
+          return;
+        }
 
         try {
-          await provider.send("wallet_switchEthereumChain", [
-            { chainId: networkParams.chainId },
-          ]);
-        } catch (switchError) {
-          if (switchError.code === 4902) {
-            try {
-              await provider.send("wallet_addEthereumChain", [networkParams]);
-            } catch (addError) {
-              showToast("Error", "Failed to add a new network", "error");
-              return;
-            }
-          } else {
-            showToast("Error", "Failed to switch the network", "error");
+          // Attempt to add the new network first
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [networkParams],
+          });
+        } catch (addError) {
+          // If the network is already known, an error will be thrown. Catch it and proceed to switch.
+          if (addError.code === 4902) {
+            quickToast("Error", "Failed to add a new network", "error");
             return;
           }
         }
 
-        // wallet = provider.getSigner();
+        try {
+          // Now switch to the network
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: networkParams.chainId }],
+          });
+        } catch (switchError) {
+          quickToast("Error", "Failed to switch the network", "error");
+          return;
+        }
+
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        wallet = provider.getSigner();
       } else if (connectionMethod === "privateKey") {
         provider = new ethers.providers.JsonRpcProvider(rpcUrl);
         wallet = new ethers.Wallet(privateKey, provider);
       } else {
-        showToast("Error", "No connection method selected", "error");
+        quickToast("Error", "No connection method selected", "error");
         return;
       }
 
@@ -221,10 +238,10 @@ export default function Home() {
               Disconnect Wallet
             </Button>
           )}
-          {/* <Input
-          placeholder="23432"
-          onChange={(e) => setChainId(e.target.value)}
-        /> */}
+          <Input
+            placeholder="23432"
+            onChange={(e) => setChainId(e.target.value)}
+          />
           <Input
             placeholder="https://rpc-devnet-idex.hardfork.dev"
             onChange={(e) => setRpcUrl(e.target.value)}
