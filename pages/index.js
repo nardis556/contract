@@ -222,6 +222,7 @@ export default function Home() {
 
       if (tx.wait) {
         tx.wait().then((receipt) => {
+          clearRpcResponse();
           console.log(receipt);
           setRpcResponse(receipt);
           showToast(
