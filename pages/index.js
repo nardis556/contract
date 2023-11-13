@@ -10,7 +10,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { ABI } from "@/values/abi";
-import { contractAddress } from "@/values/vars";
+import { ContractAddress } from "@/values/vars";
 
 export default function Home() {
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false);
@@ -18,7 +18,7 @@ export default function Home() {
   const [rpcUrl, setRpcUrl] = useState("https://rpc-devnet-idex.hardfork.dev");
   const [privateKey, setPrivateKey] = useState("");
   const [abi, setAbi] = useState(ABI);
-  const [contractAddress, setContractAddress] = useState(contractAddress);
+  const [contractAddress, setContractAddress] = useState(ContractAddress);
   const [chainId, setChainId] = useState("23432");
   const [parsedAbi, setParsedAbi] = useState([]);
   const [functionNames, setFunctionNames] = useState([]);
