@@ -1,1 +1,1 @@
-export const contractAddress = '0x9E9dcf3958b84cD1975aeFdBa8Ea0621234ff4e8'; // staging 11/13/2023
+export const ContractAddress = '0x9E9dcf3958b84cD1975aeFdBa8Ea0621234ff4e8'; // staging 11/13/2023
