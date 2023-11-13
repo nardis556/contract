@@ -31,6 +31,7 @@ export default function Home() {
   const toast = useToast();
 
   useEffect(() => {
+    renderFunctionInputs();
     if (
       typeof window !== "undefined" &&
       typeof window.ethereum !== "undefined"
