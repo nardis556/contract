@@ -79,7 +79,7 @@ export default function Home() {
   };
 
   const connectMetaMask = async () => {
-    renderFunctionInputs()
+    abi && handleAbiInput(ABI);
     if (!isMetaMaskAvailable) {
       quickToast("Error", "MetaMask is not available", "error");
       return;
@@ -99,7 +99,7 @@ export default function Home() {
   };
 
   const handlePrivateKeyChange = (e) => {
-    renderFunctionInputs()
+    abi && handleAbiInput(ABI);
     setPrivateKey(e.target.value);
     setConnectionMethod("privateKey");
   };
