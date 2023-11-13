@@ -153,7 +153,7 @@ export default function Home() {
         >
           Clear Response
         </Button>
-        <pre style={{ fontSize: "12px" }}>
+        <pre style={{ fontSize: "10px" }}>
           {JSON.stringify(rpcResponse, null, 2)}
         </pre>
         <Box display="flex" justifyContent="center" mt={2}></Box>
