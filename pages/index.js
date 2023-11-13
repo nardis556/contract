@@ -224,7 +224,14 @@ export default function Home() {
         tx.wait().then((receipt) => {
           clearRpcResponse();
           console.log(receipt);
-          setRpcResponse(receipt);
+          let receiptWithoutLogsBloom = null;
+          if (receipt.logsBloom) {
+            receiptWithoutLogsBloom = {
+              ...receipt,
+              logsBloom: "Logsbloom in console",
+            };
+          }
+          setRpcResponse(receiptWithoutLogsBloom);
           showToast(
             `Transaction mined at block #${receipt.blockNumber}. Tx hash ${receipt.transactionHash}`
           );
