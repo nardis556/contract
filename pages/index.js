@@ -74,12 +74,14 @@ export default function Home() {
       setFunctionNames(functions);
     } catch (error) {
       console.error("Error parsing ABI:", error);
+      quickToast("Error", "Error parsing ABI", "error");
       setFunctionNames([]);
     }
   };
 
   const connectMetaMask = async () => {
     !abi && handleAbiInput(JSON.stringify(ABI));
+    !abi && console.log(`abi isn't set, using default`);
     if (!isMetaMaskAvailable) {
       quickToast("Error", "MetaMask is not available", "error");
       return;
@@ -100,6 +102,7 @@ export default function Home() {
 
   const handlePrivateKeyChange = (e) => {
     !abi && handleAbiInput(JSON.stringify(ABI));
+    !abi && console.log(`abi isn't set, using default`);
     setPrivateKey(e.target.value);
     setConnectionMethod("privateKey");
   };
