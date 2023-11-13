@@ -9,14 +9,16 @@ import {
   useToast,
   Select,
 } from "@chakra-ui/react";
+import { ABI } from "@/values/abi";
+import { contractAddress } from "@/values/vars";
 
 export default function Home() {
-  const [contractAddress, setContractAddress] = useState("");
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false);
   const [connectionMethod, setConnectionMethod] = useState("");
   const [rpcUrl, setRpcUrl] = useState("https://rpc-devnet-idex.hardfork.dev");
   const [privateKey, setPrivateKey] = useState("");
-  const [abi, setAbi] = useState("");
+  const [abi, setAbi] = useState(ABI);
+  const [contractAddress, setContractAddress] = useState(contractAddress);
   const [chainId, setChainId] = useState("23432");
   const [parsedAbi, setParsedAbi] = useState([]);
   const [functionNames, setFunctionNames] = useState([]);
@@ -261,11 +263,11 @@ export default function Home() {
             onChange={(e) => setRpcUrl(e.target.value)}
           />
           <Input
-            placeholder="Contract Address"
+            placeholder="Contract Address. Default 0x9E9..."
             onChange={(e) => setContractAddress(e.target.value)}
           />
           <Textarea
-            placeholder="Contract ABI"
+            placeholder="Contract ABI. Default 0x9E9... ABI"
             onChange={(e) => handleAbiInput(e.target.value)}
           />
           <Select
