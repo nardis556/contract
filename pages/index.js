@@ -17,7 +17,7 @@ export default function Home() {
   const [connectionMethod, setConnectionMethod] = useState("");
   const [rpcUrl, setRpcUrl] = useState("https://rpc-devnet-idex.hardfork.dev");
   const [privateKey, setPrivateKey] = useState("");
-  const [abi, setAbi] = useState(ABI);
+  const [abi, setAbi] = useState("");
   const [contractAddress, setContractAddress] = useState(ContractAddress);
   const [chainId, setChainId] = useState("23432");
   const [parsedAbi, setParsedAbi] = useState([]);
@@ -79,7 +79,7 @@ export default function Home() {
   };
 
   const connectMetaMask = async () => {
-    abi && handleAbiInput(ABI);
+    !abi && handleAbiInput(ABI);
     if (!isMetaMaskAvailable) {
       quickToast("Error", "MetaMask is not available", "error");
       return;
@@ -99,7 +99,7 @@ export default function Home() {
   };
 
   const handlePrivateKeyChange = (e) => {
-    abi && handleAbiInput(ABI);
+    !abi && handleAbiInput(ABI);
     setPrivateKey(e.target.value);
     setConnectionMethod("privateKey");
   };
