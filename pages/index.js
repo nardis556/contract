@@ -146,7 +146,11 @@ export default function Home() {
 
     return (
       <Box mt={4} p={3} bg="gray.700" borderRadius="md">
-        <Button colorScheme="red" onClick={clearRpcResponse}>
+        <Button
+          colorScheme="red"
+          justifyContent="center"
+          onClick={clearRpcResponse}
+        >
           Clear Response
         </Button>
         <pre style={{ fontSize: "12px" }}>
