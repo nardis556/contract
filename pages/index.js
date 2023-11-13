@@ -149,8 +149,9 @@ export default function Home() {
         <Button colorScheme="red" onClick={clearRpcResponse}>
           Clear Response
         </Button>
-        <pre>{JSON.stringify(rpcResponse, null, 2)}</pre>
-
+        <pre style={{ fontSize: "12px" }}>
+          {JSON.stringify(rpcResponse, null, 2)}
+        </pre>
         <Box display="flex" justifyContent="center" mt={2}></Box>
       </Box>
     );
