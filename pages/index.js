@@ -31,7 +31,6 @@ export default function Home() {
   const toast = useToast();
 
   useEffect(() => {
-    renderFunctionInputs();
     if (
       typeof window !== "undefined" &&
       typeof window.ethereum !== "undefined"
@@ -80,6 +79,7 @@ export default function Home() {
   };
 
   const connectMetaMask = async () => {
+    renderFunctionInputs()
     if (!isMetaMaskAvailable) {
       quickToast("Error", "MetaMask is not available", "error");
       return;
@@ -99,6 +99,7 @@ export default function Home() {
   };
 
   const handlePrivateKeyChange = (e) => {
+    renderFunctionInputs()
     setPrivateKey(e.target.value);
     setConnectionMethod("privateKey");
   };
