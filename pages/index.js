@@ -167,6 +167,47 @@ export default function Home() {
     rpcUrls: [rpcUrl],
   };
 
+  function txHandler(
+    tx,
+    selectedFunction,
+    functionArgs,
+    setRpcResponse,
+    showToast,
+    clearRpcResponse
+  ) {
+    if (!tx.wait) {
+      console.log(`${selectedFunction.name} request:`);
+      console.log(`Function args: ${JSON.stringify(functionArgs, null, 2)}`);
+      console.log(tx);
+      setRpcResponse(tx);
+      showToast(JSON.stringify(tx, null, 2));
+    } else if (tx.wait) {
+      console.log(`Transaction submitted:`);
+      console.log(`${selectedFunction.name} request:`);
+      console.log(`Function args: ${JSON.stringify(functionArgs, null, 2)}`);
+      console.log(tx);
+      setRpcResponse(tx);
+      setTimeout(() => {
+        tx.wait().then((receipt) => {
+          clearRpcResponse();
+          console.log(`Transaction response:`);
+          console.log(receipt);
+          let receiptWithoutLogsBloom = null;
+          if (receipt.logsBloom) {
+            receiptWithoutLogsBloom = {
+              ...receipt,
+              logsBloom: "Logsbloom in console",
+            };
+          }
+          setRpcResponse(receiptWithoutLogsBloom);
+          showToast(
+            `Transaction mined at block #${receipt.blockNumber}. Tx hash ${receipt.transactionHash}`
+          );
+        });
+      }, 5000);
+    }
+  }
+
   const handleContractInteraction = async () => {
     clearRpcResponse();
     setIsButtonDisabled(true);
@@ -220,39 +261,14 @@ export default function Home() {
 
       const tx = await contract[selectedFunction.name](...functionArgs);
 
-      if (!tx.wait) {
-        console.log(`${selectedFunction.name} request:`);
-        console.log(`Function args: ${JSON.stringify(functionArgs, null, 2)}`);
-        console.log(tx);
-        setRpcResponse(tx);
-        showToast(JSON.stringify(tx, null, 2));
-      }
-
-      if (tx.wait) {
-        console.log(`Transaction submitted:`);
-        console.log(`${selectedFunction.name} request:`);
-        console.log(`Function args: ${JSON.stringify(functionArgs, null, 2)}`);
-        console.log(tx);
-        setRpcResponse(tx);
-        setTimeout(() => {
-          tx.wait().then((receipt) => {
-            clearRpcResponse();
-            console.log(`Transaction response:`);
-            console.log(receipt);
-            let receiptWithoutLogsBloom = null;
-            if (receipt.logsBloom) {
-              receiptWithoutLogsBloom = {
-                ...receipt,
-                logsBloom: "Logsbloom in console",
-              };
-            }
-            setRpcResponse(receiptWithoutLogsBloom);
-            showToast(
-              `Transaction mined at block #${receipt.blockNumber}. Tx hash ${receipt.transactionHash}`
-            );
-          });
-        }, 5000);
-      }
+      txHandler(
+        tx,
+        selectedFunction,
+        functionArgs,
+        setRpcResponse,
+        showToast,
+        clearRpcResponse
+      );
     } catch (error) {
       console.error("Transaction failed:", error);
       showToast("Transaction failed!", error.message, "error");
