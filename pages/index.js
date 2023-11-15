@@ -218,17 +218,26 @@ export default function Home() {
 
       const contract = new ethers.Contract(contractAddress, abi, wallet);
 
-      console.log(`Tx`);
       const tx = await contract[selectedFunction.name](...functionArgs);
 
-      console.log(tx);
-      setRpcResponse(tx);
-      showToast(JSON.stringify(tx, null, 2));
+      if (!tx.wait) {
+        console.log(`${selectedFunction.name} request:`);
+        console.log(`Function args: ${JSON.stringify(functionArgs, null, 2)}`);
+        console.log(tx);
+        setRpcResponse(tx);
+        showToast(JSON.stringify(tx, null, 2));
+      }
 
       if (tx.wait) {
+        console.log(`Transaction submitted:`);
+        console.log(`${selectedFunction.name} request:`);
+        console.log(`Function args: ${JSON.stringify(functionArgs, null, 2)}`);
+        console.log(tx);
+        setRpcResponse(tx);
         setTimeout(() => {
           tx.wait().then((receipt) => {
             clearRpcResponse();
+            console.log(`Transaction response:`);
             console.log(receipt);
             let receiptWithoutLogsBloom = null;
             if (receipt.logsBloom) {
