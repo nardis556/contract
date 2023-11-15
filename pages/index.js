@@ -167,14 +167,7 @@ export default function Home() {
     rpcUrls: [rpcUrl],
   };
 
-  function txHandler(
-    tx,
-    selectedFunction,
-    functionArgs,
-    setRpcResponse,
-    showToast,
-    clearRpcResponse
-  ) {
+  async function txHandler(tx, selectedFunction, functionArgs) {
     if (!tx.wait) {
       console.log(`${selectedFunction.name} request:`);
       console.log(`Function args: ${JSON.stringify(functionArgs, null, 2)}`);
@@ -261,14 +254,7 @@ export default function Home() {
 
       const tx = await contract[selectedFunction.name](...functionArgs);
 
-      txHandler(
-        tx,
-        selectedFunction,
-        functionArgs,
-        setRpcResponse,
-        showToast,
-        clearRpcResponse
-      );
+      await txHandler(tx, selectedFunction, functionArgs);
     } catch (error) {
       console.error("Transaction failed:", error);
       showToast("Transaction failed!", error.message, "error");
