@@ -226,21 +226,23 @@ export default function Home() {
       showToast(JSON.stringify(tx, null, 2));
 
       if (tx.wait) {
-        tx.wait().then((receipt) => {
-          clearRpcResponse();
-          console.log(receipt);
-          let receiptWithoutLogsBloom = null;
-          if (receipt.logsBloom) {
-            receiptWithoutLogsBloom = {
-              ...receipt,
-              logsBloom: "Logsbloom in console",
-            };
-          }
-          setRpcResponse(receiptWithoutLogsBloom);
-          showToast(
-            `Transaction mined at block #${receipt.blockNumber}. Tx hash ${receipt.transactionHash}`
-          );
-        });
+        setTimeout(() => {
+          tx.wait().then((receipt) => {
+            clearRpcResponse();
+            console.log(receipt);
+            let receiptWithoutLogsBloom = null;
+            if (receipt.logsBloom) {
+              receiptWithoutLogsBloom = {
+                ...receipt,
+                logsBloom: "Logsbloom in console",
+              };
+            }
+            setRpcResponse(receiptWithoutLogsBloom);
+            showToast(
+              `Transaction mined at block #${receipt.blockNumber}. Tx hash ${receipt.transactionHash}`
+            );
+          });
+        }, 5000);
       }
     } catch (error) {
       console.error("Transaction failed:", error);
