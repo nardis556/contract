@@ -253,6 +253,12 @@ export const ABI = [
         name: "quantity",
         type: "uint64",
       },
+      {
+        indexed: false,
+        internalType: "int64",
+        name: "newExchangeBalance",
+        type: "int64",
+      },
     ],
     name: "Deposited",
     type: "event",
@@ -626,31 +632,6 @@ export const ABI = [
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "wallet",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint64",
-        name: "quantity",
-        type: "uint64",
-      },
-      {
-        indexed: false,
-        internalType: "int64",
-        name: "newExchangeBalance",
-        type: "int64",
-      },
-    ],
-    name: "PendingDepositApplied",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
         internalType: "uint256",
         name: "previousValue",
         type: "uint256",
@@ -973,24 +954,6 @@ export const ABI = [
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "quantity",
-        type: "uint64",
-      },
-      {
-        internalType: "address",
-        name: "wallet",
-        type: "address",
-      },
-    ],
-    name: "applyPendingDepositsForWallet",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "address",
         name: "",
         type: "address",
@@ -1110,6 +1073,11 @@ export const ABI = [
             type: "address",
           },
           {
+            internalType: "uint64[]",
+            name: "validateInsuranceFundCannotLiquidateWalletQuoteQuantities",
+            type: "uint64[]",
+          },
+          {
             internalType: "uint64",
             name: "liquidationBaseQuantity",
             type: "uint64",
@@ -1188,6 +1156,11 @@ export const ABI = [
             internalType: "address",
             name: "liquidatingWallet",
             type: "address",
+          },
+          {
+            internalType: "uint64[]",
+            name: "validateInsuranceFundCannotLiquidateWalletQuoteQuantities",
+            type: "uint64[]",
           },
           {
             internalType: "uint64",
@@ -2415,25 +2388,6 @@ export const ABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "pendingDepositQuantityByWallet",
-    outputs: [
-      {
-        internalType: "uint64",
-        name: "",
-        type: "uint64",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "positionBelowMinimumLiquidationPriceToleranceMultiplier",
     outputs: [
@@ -2899,11 +2853,6 @@ export const ABI = [
           {
             internalType: "uint64",
             name: "grossQuantity",
-            type: "uint64",
-          },
-          {
-            internalType: "uint64",
-            name: "maximumGasFee",
             type: "uint64",
           },
           {

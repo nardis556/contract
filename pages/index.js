@@ -15,11 +15,11 @@ import { ContractAddress } from "@/values/vars";
 export default function Home() {
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false);
   const [connectionMethod, setConnectionMethod] = useState("");
-  const [rpcUrl, setRpcUrl] = useState("https://rpc-devnet-idex.hardfork.dev");
+  const [rpcUrl, setRpcUrl] = useState("https://xchain-testnet-rpc.idex.io/");
   const [privateKey, setPrivateKey] = useState("");
   const [abi, setAbi] = useState("");
   const [contractAddress, setContractAddress] = useState(ContractAddress);
-  const [chainId, setChainId] = useState("23432");
+  const [chainId, setChainId] = useState("64002");
   const [parsedAbi, setParsedAbi] = useState([]);
   const [functionNames, setFunctionNames] = useState([]);
   const [selectedFunction, setSelectedFunction] = useState(null);
