@@ -276,7 +276,7 @@ export default function Home() {
           )}
           {!isMetaMaskConnected && (
             <Input
-              placeholder="Wallet Private Key"
+              placeholder="Wallet Private Key or connect MetaMask^"
               onChange={handlePrivateKeyChange}
             />
           )}
@@ -290,15 +290,15 @@ export default function Home() {
             onChange={(e) => setChainId(e.target.value)}
           />
           <Input
-            placeholder="https://rpc-devnet-idex.hardfork.dev"
+            placeholder="RPC URL"
             onChange={(e) => setRpcUrl(e.target.value)}
           />
           <Input
-            placeholder="Contract Address. Default 0x9E9..."
+            placeholder="Contract Address."
             onChange={(e) => setContractAddress(e.target.value)}
           />
           <Textarea
-            placeholder="Contract ABI. Default 0x9E9... ABI"
+            placeholder="Contract ABI"
             onChange={(e) => handleAbiInput(e.target.value)}
           />
           <Select
